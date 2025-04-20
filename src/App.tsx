@@ -1,12 +1,14 @@
 import React from 'react';
-import DataReport from './components/DataReport';
+import MenuBar from './components/MenuBar';
+import Dashboard from './components/Dashboard';
 import './styles/App.css';
 
 const App: React.FC = () => {
   return (
     <div className="App">
-      <h1>Data Reporting Application</h1>
-      <DataReport />
+      <MenuBar />
+      <h1>Propy BackOffice Dashboard</h1>
+      <Dashboard />
     </div>
   );
 };
