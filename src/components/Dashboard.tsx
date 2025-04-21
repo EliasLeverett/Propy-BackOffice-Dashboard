@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Bar, Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -25,6 +25,22 @@ ChartJS.register(
 );
 
 const Dashboard: React.FC = () => {
+  const [reports, setReports] = useState<{ title: string; description: string; date: string }[]>([]);
+
+  useEffect(() => {
+    const fetchReports = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/reports');
+        const data = await response.json();
+        setReports(data);
+      } catch (error) {
+        console.error('Error fetching reports:', error);
+      }
+    };
+
+    fetchReports();
+  }, []);
+
   // Bar chart data
   const barData = {
     labels: ['January', 'February', 'March', 'April', 'May'],
@@ -85,6 +101,19 @@ const Dashboard: React.FC = () => {
           <h3>Visitor Trends (Line Chart)</h3>
           <Line data={lineData} />
         </div>
+      </div>
+
+      <div style={{ marginTop: '20px' }}>
+        <h2>Reports</h2>
+        <ul>
+          {reports.map((report, index) => (
+            <li key={index}>
+              <h3>{report.title}</h3>
+              <p>{report.description}</p>
+              <p><strong>Date:</strong> {new Date(report.date).toLocaleDateString()}</p>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );
